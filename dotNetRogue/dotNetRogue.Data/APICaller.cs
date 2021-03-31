@@ -10,14 +10,8 @@ namespace dotNetRogue.Data
 {
     public static class APICaller
     {
-        // private readonly IHttpClientFactory factory;
         public static HttpClient ApiClient { get; set; }
 
-        /*public APICaller(IHttpClientFactory factory)
-        {
-            this.factory = factory;
-        }
-        */
 
         public static void InitializeClient()
         {

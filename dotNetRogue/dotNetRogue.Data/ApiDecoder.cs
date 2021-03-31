@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using dotNetRogue.Data.Models;
 using Newtonsoft.Json;
@@ -19,7 +18,7 @@ namespace dotNetRogue.Data
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var weaponDto = await response.Content.ReadFromJsonAsync<WeaponDTO>();
+                    var weaponDto = await response.Content.ReadAsAsync<WeaponDTO>();
                     return weaponDto;
                 }
                 else

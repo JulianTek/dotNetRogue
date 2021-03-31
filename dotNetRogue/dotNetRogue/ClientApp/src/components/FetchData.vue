@@ -5,15 +5,15 @@
 
     <p v-if="!weapons"><em>Loading...</em></p>
 
-    <table class='table table-striped' aria-labelledby="tableLabel" v-if="weapon">
+    <table class='table table-striped' aria-labelledby="tableLabel" v-if="weapons">
         <thead>
             <tr>
                 <th>Name</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="weapon of weapons" v-bind:key="weapon">
-                <td>{{ weapon.Name }}</td>
+            <tr v-for="weapon of weapons" v-bind:key="weapon.name">
+                <td>{{ weapon.name }}</td>
             </tr>
         </tbody>
     </table>
@@ -31,9 +31,9 @@
         },
         methods: {
             getWeatherForecasts() {
-                axios.get('https://localhost:44328/weapon')
+                axios.get('/weapon')
                     .then((response) => {
-                        this.weapons =  response.data;
+                        this.weapons = response.data;
                     })
                     .catch(function (error) {
                         alert(error);
