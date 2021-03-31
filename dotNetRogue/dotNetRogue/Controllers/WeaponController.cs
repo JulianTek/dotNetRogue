@@ -15,16 +15,9 @@ namespace dotNetRogue.Controllers
     {
         private readonly ApiDecoder _apiDecoder = new ApiDecoder();
 
-        public async Task<IEnumerable<WeaponDTO>> Get()
+        public async Task<WeaponDTO> Get()
         {
-            var weapons = new List<WeaponDTO>();
-
-            for (int i = 0; i < 5; i++)
-            {
-                weapons.Add(await _apiDecoder.GenerateWeaponDto());
-            }
-
-            return weapons;
+            return await _apiDecoder.GenerateWeaponDto();
         }
     }
 }
