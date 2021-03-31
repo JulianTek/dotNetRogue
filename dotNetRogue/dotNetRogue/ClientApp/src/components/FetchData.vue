@@ -1,19 +1,25 @@
 <template>
-    <h1 id="tableLabel">Weapon data</h1>
+    <h1 id="tableLabel">Weather forecast</h1>
 
     <p>This component demonstrates fetching data from the server.</p>
 
-    <p v-if="!weapons"><em>Loading...</em></p>
+    <p v-if="!forecasts"><em>Loading...</em></p>
 
-    <table class='table table-striped' aria-labelledby="tableLabel" v-if="weapons">
+    <table class='table table-striped' aria-labelledby="tableLabel" v-if="forecasts">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="weapon of weapons" v-bind:key="weapon.name">
-                <td>{{ weapon.name }}</td>
+            <tr v-for="forecast of forecasts" v-bind:key="forecast">
+                <td>{{ forecast.date }}</td>
+                <td>{{ forecast.temperatureC }}</td>
+                <td>{{ forecast.temperatureF }}</td>
+                <td>{{ forecast.summary }}</td>
             </tr>
         </tbody>
     </table>
@@ -26,14 +32,14 @@
         name: "FetchData",
         data() {
             return {
-                weapons: []
+                forecasts: []
             }
         },
         methods: {
             getWeatherForecasts() {
-                axios.get('/weapon')
+                axios.get('/weatherforecast')
                     .then((response) => {
-                        this.weapons = response.data;
+                        this.forecasts =  response.data;
                     })
                     .catch(function (error) {
                         alert(error);

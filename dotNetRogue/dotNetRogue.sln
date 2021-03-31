@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotNetRogue", "dotNetRogue\dotNetRogue.csproj", "{C59EDD9F-5B17-4DA2-8234-0B30B0EAF533}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNetRogue.Data", "dotNetRogue.Data\dotNetRogue.Data.csproj", "{2BB4400A-122D-4D85-AC1A-E4730EE92564}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNetRogue", "dotNetRogue\dotNetRogue.csproj", "{C59EDD9F-5B17-4DA2-8234-0B30B0EAF533}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{C59EDD9F-5B17-4DA2-8234-0B30B0EAF533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C59EDD9F-5B17-4DA2-8234-0B30B0EAF533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C59EDD9F-5B17-4DA2-8234-0B30B0EAF533}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BB4400A-122D-4D85-AC1A-E4730EE92564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BB4400A-122D-4D85-AC1A-E4730EE92564}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BB4400A-122D-4D85-AC1A-E4730EE92564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BB4400A-122D-4D85-AC1A-E4730EE92564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

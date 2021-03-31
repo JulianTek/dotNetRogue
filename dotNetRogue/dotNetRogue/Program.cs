@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotNetRogue.Data;
 
 namespace dotNetRogue
 {
@@ -14,7 +13,6 @@ namespace dotNetRogue
     {
         public static void Main(string[] args)
         {
-            APICaller.InitializeClient();
             CreateHostBuilder(args).Build().Run();
         }
 
