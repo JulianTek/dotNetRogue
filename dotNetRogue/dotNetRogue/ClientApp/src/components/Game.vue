@@ -1,11 +1,11 @@
 ﻿<template>
     <h1>dotNetRogue</h1>
 
-    <p>An enemy attacks you!</p>
+    <p v-if="enemy != null">{{enemy.name}} attacks you!</p>
 
-    <p aria-live="polite">Current enemy health: <strong>{{ enemyHealth }}</strong></p>
+    <p aria-live="polite" v-if="enemy != null">Current enemy health: <strong>{{ enemy.health }}</strong></p>
     <p v-if="weapon != null">You have a {{weapon.name}}</p>
-    <button v-if="weapon != null" class="btn btn-primary" @click="attack">Attack!</button>
+    <button v-if="weapon != null && enemy != null" class="btn btn-primary" @click="attack">Attack!</button>
 </template>
 
 
@@ -15,14 +15,14 @@
         name: "Counter",
         data() {
             return {
-                enemyHealth: 100,
                 weapon: null,
+                enemy: null,
             }
         },
         methods: {
             attack() {
                 var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + 1;
-                this.enemyHealth = this.enemyHealth - dmg;
+                this.enemy.health = this.enemy.health - dmg;
             },
             getWeapon() {
                 axios.get('/weapon')
@@ -33,9 +33,19 @@
                         alert(error);
                     });
             },
+            getEnemy() {
+                axios.get('/enemy')
+                    .then((response) => {
+                        this.enemy = response.data;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
         },
         mounted() {
             this.getWeapon();
+            this.getEnemy();
         }
     }
 </script>

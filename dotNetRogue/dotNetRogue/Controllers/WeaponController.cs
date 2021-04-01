@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotNetRogue.Data;
 using dotNetRogue.Data.Models;
-using dotNetRogue.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotNetRogue.Controllers

@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetRogue.Logic.Interfaces;
+using dotNetRogue.Repositories;
+using Microsoft.EntityFrameworkCore;
 using VueCliMiddleware;
 
 namespace dotNetRogue
@@ -26,10 +29,12 @@ namespace dotNetRogue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
             });
+            services.AddScoped<IEnemyRepository, EnemyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
