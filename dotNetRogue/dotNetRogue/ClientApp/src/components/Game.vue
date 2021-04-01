@@ -21,7 +21,7 @@
         },
         methods: {
             attack() {
-                var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + 1;
+                var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2));
                 this.enemyHealth = this.enemyHealth - dmg;
             },
             getWeapon() {
