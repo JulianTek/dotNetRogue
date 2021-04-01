@@ -3,9 +3,10 @@
 
     <p>An enemy attacks you!</p>
 
-    <p aria-live="polite">Current enemy health: <strong>{{ enemyHealth }}</strong></p>
+    <p aria-live="polite">Current enemy health: <strong>{{ enemy.health }}</strong></p>
     <p v-if="weapon != null">You have a {{weapon.name}}</p>
-    <button v-if="weapon != null" class="btn btn-primary" @click="attack">Attack!</button>
+    <button v-if="weapon != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
+    <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack)">Block!</button>
 </template>
 
 
@@ -15,14 +16,20 @@
         name: "Counter",
         data() {
             return {
-                enemyHealth: 100,
+                playerHealth: 100,
+                canAttack: true,
                 weapon: null,
             }
         },
         methods: {
             attack() {
-                var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2));
-                this.enemyHealth = this.enemyHealth - dmg;
+                var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2);
+                this.playerHealth = this.playerHealth - dmg;
+                this.canAttack = false;
+            },
+            enemyAttack() {
+                var dmg = Math.floor(Math.random() * this.enemy.attack) + Math.round(this.enemy.attack / 2);
+                return dmg;
             },
             getWeapon() {
                 axios.get('/weapon')
@@ -32,6 +39,10 @@
                     .catch(function (error) {
                         alert(error);
                     });
+            },
+            block(enemyDmg) {
+                this.playerHealth = this.playerHealth - (enemyDmg * this.weapon.stats["Defense"]);
+                this.canAttack = true;
             },
         },
         mounted() {
