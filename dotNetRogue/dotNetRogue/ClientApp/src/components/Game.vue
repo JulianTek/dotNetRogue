@@ -4,8 +4,10 @@
     <p v-if="enemy != null">{{enemy.name}} attacks you!</p>
 
     <p aria-live="polite" v-if="enemy != null">Current enemy health: <strong>{{ enemy.health }}</strong></p>
+    <p>Your health is: <strong>{{playerHealth}}</strong></p>
     <p v-if="weapon != null">You have a {{weapon.name}}</p>
-    <button v-if="weapon != null && enemy != null" class="btn btn-primary" @click="attack">Attack!</button>
+    <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
+    <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack())">Block!</button>
 </template>
 
 
@@ -24,7 +26,7 @@
         methods: {
             attack() {
                 var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2);
-                this.playerHealth = this.playerHealth - dmg;
+                this.enemy.health = this.enemy.health - dmg;
                 this.canAttack = false;
             },
             enemyAttack() {
@@ -50,7 +52,7 @@
                     });
             },
             block(enemyDmg) {
-                this.playerHealth = this.playerHealth - (enemyDmg * this.weapon.stats["Defense"]);
+                this.playerHealth = this.playerHealth - Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
                 this.canAttack = true;
             },
         },
