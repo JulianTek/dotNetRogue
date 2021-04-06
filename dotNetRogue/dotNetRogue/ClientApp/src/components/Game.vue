@@ -14,7 +14,7 @@
 <script>
     import axios from 'axios'
     export default {
-        name: "Counter",
+        name: "Game",
         data() {
             return {
                 playerHealth: 100,

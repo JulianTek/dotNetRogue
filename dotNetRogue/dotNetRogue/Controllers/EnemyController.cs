@@ -10,20 +10,17 @@ namespace dotNetRogue.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EnemyGeneratorController : ControllerBase
+    public class EnemyController : ControllerBase
     {
-        public EnemyGeneratorController(IEnemyRepository enemyRepository)
+        public EnemyController(IEnemyRepository enemyRepository)
         {
             _enemyRepository = enemyRepository;
         }
-
         private readonly IEnemyRepository _enemyRepository;
-        private readonly Random _rnd = new Random();
 
-        public Enemy Get()
+        public IEnumerable<Enemy> Get()
         {
-            var enemies = _enemyRepository.GetEnemies().ToList();
-            return enemies[_rnd.Next(0, enemies.Count)];
+            return _enemyRepository.GetEnemies();
         }
     }
 }

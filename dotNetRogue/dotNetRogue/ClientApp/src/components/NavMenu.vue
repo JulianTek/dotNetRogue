@@ -27,6 +27,9 @@
                         <li class="nav-item">
                             <router-link :to="{ name: 'Game' }" class="nav-link text-dark">Game</router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'Enemy' }" class="nav-link text-dark">Enemy types</router-link>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -5,7 +5,7 @@
 
     <p v-if="!weapons"><em>Loading...</em></p>
 
-    <table class='table table-striped' aria-labelledby="tableLabel" v-if="weapons">
+     <table class='table table-striped' aria-labelledby="tableLabel" v-if="weapons">
         <thead>
             <tr>
                 <th>Name</th>
