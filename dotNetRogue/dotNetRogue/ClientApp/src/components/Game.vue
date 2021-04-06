@@ -14,7 +14,7 @@
 <script>
     import axios from 'axios'
     export default {
-        name: "Counter",
+        name: "Game",
         data() {
             return {
                 playerHealth: 100,
@@ -34,7 +34,7 @@
                 return dmg;
             },
             getWeapon() {
-                axios.get('/weapon')
+                axios.get('/weapongenerator')
                     .then((response) => {
                         this.weapon = response.data;
                     })
@@ -43,7 +43,7 @@
                     });
             },
             getEnemy() {
-                axios.get('/enemy')
+                axios.get('/enemygenerator')
                     .then((response) => {
                         this.enemy = response.data;
                     })

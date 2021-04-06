@@ -10,7 +10,7 @@ namespace dotNetRogue.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeaponController : ControllerBase
+    public class WeaponGeneratorController : ControllerBase
     {
         private readonly ApiDecoder _apiDecoder = new ApiDecoder();
 
