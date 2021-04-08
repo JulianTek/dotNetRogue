@@ -34,6 +34,17 @@ namespace dotNetRogue
             {
                 configuration.RootPath = "ClientApp";
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:8080");
+                });
+            });
             services.AddScoped<IEnemyRepository, EnemyRepository>();
         }
 
@@ -44,7 +55,7 @@ namespace dotNetRogue
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("VueCorsPolicy");
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();

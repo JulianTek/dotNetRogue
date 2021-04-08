@@ -45,16 +45,16 @@
                         <span aria-hidden="true" @click="hideEnemyOverlay">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" />
-                    <input type="text" name="health" class="form-control form-control-lg" placeholder="Heatlh" />
-                    <input type="text" name="attack" class="form-control form-control-lg" placeholder="Attack" />
-                    <input type="text" name="defense" class="form-control form-control-lg" placeholder="Defense" />
-                    <input type="text" name="speed" class="form-control form-control-lg" placeholder="Speed" />
-                    <input type="text" name="goldOnKill" class="form-control form-control-lg" placeholder="Gold on kill" />
-                </div>
+                <form class="modal-body">
+                    <input type="text" name="name" v-model="this.name" class="form-control form-control-lg" placeholder="Name" />
+                    <input type="number" name="health" v-model="this.health" class="form-control form-control-lg" placeholder="Heatlh" />
+                    <input type="number" name="attack" v-model="this.attack" class="form-control form-control-lg" placeholder="Attack" />
+                    <input type="number" name="defense" v-model="this.defense" class="form-control form-control-lg" placeholder="Defense" />
+                    <input type="number" name="speed" v-model="this.speed" class="form-control form-control-lg" placeholder="Speed" />
+                    <input type="number" name="goldOnKill" v-model="goldOnKill" class="form-control form-control-lg" placeholder="Gold on kill" />
+                </form>
                 <div class="form-group">
-                    <button class="btn btn-info btn-block btn-lg">Add enemy type</button>
+                    <button class="btn btn-info btn-block btn-lg" @click="addEnemy">Add enemy type</button>
                 </div>
             </div>
         </div>
@@ -72,6 +72,7 @@
                 name: null,
                 health: null,
                 attack: null,
+                defense: null,
                 speed: null,
                 goldOnKill: null
             }
@@ -97,17 +98,19 @@
                     name: this.name,
                     health: this.health,
                     attack: this.attack,
+                    defense: this.defense,
                     speed: this.speed,
                     goldOnKill: this.goldOnKill
                 }
-                axios.post('/enemy', enemy).then((response) => {
-                    this.enemyTypes = response.data;
+                console.log(enemy);
+                axios.post('/enemy', this.enemy).then((response) => {
+                    console.log(response);
                 })
                     .catch(function (error) {
                         alert(error);
                     });
-                this.enemies.push(enemy);
-                this.showOverlay = false;
+                this.enemyTypes.push(enemy);
+                this.showOverlay = false;   
             },
         },
         mounted() {
