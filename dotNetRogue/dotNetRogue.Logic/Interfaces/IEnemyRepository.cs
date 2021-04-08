@@ -9,5 +9,6 @@ namespace dotNetRogue.Logic.Interfaces
     {
         public IEnumerable<Enemy> GetEnemies();
         public Enemy GetEnemyByName(string name);
+        public Enemy Add(Enemy enemy);
     }
 }

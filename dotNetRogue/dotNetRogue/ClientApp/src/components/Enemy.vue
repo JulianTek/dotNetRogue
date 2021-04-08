@@ -11,6 +11,7 @@
 </style>
 <template>
     <h1>Enemy types:</h1>
+    <button class="btn btn-info" @click="addEnemyOverlay()">Add new enemy</button>
     <table class='table table-striped' aria-labelledby="tableLabel" v-if="enemyTypes">
         <thead>
             <tr>
@@ -41,7 +42,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Add new enemy type</h5>
                     <button type="button" class="close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" @click="hideEnemyOverlay">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -53,7 +54,7 @@
                     <input type="text" name="goldOnKill" class="form-control form-control-lg" placeholder="Gold on kill" />
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-info btn-block btn-lg">>Add enemy type</button>
+                    <button class="btn btn-info btn-block btn-lg">Add enemy type</button>
                 </div>
             </div>
         </div>
@@ -63,16 +64,20 @@
 <script>
     import axios from 'axios'
     export default {
-        name: "Game",
+        name: "Enemy",
         data() {
             return {
                 enemyTypes: [],
-                showOverlay:
-                    false,
+                showOverlay: false,
+                name: null,
+                health: null,
+                attack: null,
+                speed: null,
+                goldOnKill: null
             }
         },
         methods: {
-    getAll() {
+            getAll() {
                 axios.get('/enemy')
                     .then((response) => {
                         this.enemyTypes = response.data;
@@ -80,9 +85,31 @@
                     .catch(function (error) {
                         alert(error);
                     });
-            }
+            },
+            addEnemyOverlay() {
+                this.showOverlay = true;
+            },
+            hideEnemyOverlay() {
+                this.showOverlay = false;
+            },
+            addEnemy() {
+                var enemy = {
+                    name: this.name,
+                    health: this.health,
+                    attack: this.attack,
+                    speed: this.speed,
+                    goldOnKill: this.goldOnKill
+                }
+                axios.post('/enemy', enemy).then((response) => {
+                    this.enemyTypes = response.data;
+                })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+                this.enemies.push(enemy);
+                this.showOverlay = false;
+            },
         },
-
         mounted() {
             this.getAll()
         }

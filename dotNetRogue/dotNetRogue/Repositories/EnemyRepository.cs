@@ -24,5 +24,12 @@ namespace dotNetRogue.Repositories
         {
             return _context.Enemies.Find(name);
         }
+
+        public Enemy Add(Enemy enemy)
+        {
+            _context.Add(enemy);
+            _context.SaveChanges();
+            return enemy;
+        }
     }
 }
