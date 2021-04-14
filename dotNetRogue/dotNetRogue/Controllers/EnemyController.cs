@@ -27,7 +27,7 @@ namespace dotNetRogue.Controllers
 
         [Route("/enemy")]
         [HttpPost]
-        public IActionResult Post(Enemy enemy)
+        public IActionResult Post([FromBody]Enemy enemy)
         {
             _enemyRepository.Add(enemy);
             return Ok(enemy);

@@ -69,12 +69,12 @@
             return {
                 enemyTypes: [],
                 showOverlay: false,
-                name: null,
-                health: null,
-                attack: null,
-                defense: null,
-                speed: null,
-                goldOnKill: null
+                name: "",
+                health: 0,
+                attack: 0,
+                defense: 0,
+                speed: 0,
+                goldOnKill: 0
             }
         },
         methods: {
@@ -93,7 +93,7 @@
             hideEnemyOverlay() {
                 this.showOverlay = false;
             },
-            addEnemy() {
+            async       addEnemy() {
                 var enemy = {
                     name: this.name,
                     health: this.health,
@@ -103,11 +103,11 @@
                     goldOnKill: this.goldOnKill
                 }
                 console.log(enemy);
-                axios.post('/enemy', this.enemy).then((response) => {
+                await axios.post('/enemy', {name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill}).then((response) => {
                     console.log(response);
                 })
                     .catch(function (error) {
-                        alert(error);
+                        alert(error.message);
                     });
                 this.enemyTypes.push(enemy);
                 this.showOverlay = false;   

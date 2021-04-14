@@ -29,6 +29,7 @@ namespace dotNetRogue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
             services.AddSpaStaticFiles(configuration =>
             {
