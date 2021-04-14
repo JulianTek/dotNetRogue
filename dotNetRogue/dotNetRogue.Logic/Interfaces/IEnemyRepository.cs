@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using dotNetRogue.Logic.Models;
 
 namespace dotNetRogue.Logic.Interfaces
@@ -9,5 +10,6 @@ namespace dotNetRogue.Logic.Interfaces
     {
         public IEnumerable<Enemy> GetEnemies();
         public Enemy GetEnemyByName(string name);
+        public Task<Enemy> Add(Enemy enemy);
     }
 }

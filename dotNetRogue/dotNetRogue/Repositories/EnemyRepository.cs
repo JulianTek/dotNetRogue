@@ -24,5 +24,12 @@ namespace dotNetRogue.Repositories
         {
             return _context.Enemies.Find(name);
         }
+
+        public async Task<Enemy> Add(Enemy enemy)
+        {
+           await _context.AddAsync(enemy);
+            await _context.SaveChangesAsync();
+            return enemy;
+        }
     }
 }

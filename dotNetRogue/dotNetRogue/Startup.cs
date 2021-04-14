@@ -29,10 +29,22 @@ namespace dotNetRogue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:8080");
+                });
             });
             services.AddScoped<IEnemyRepository, EnemyRepository>();
         }
@@ -44,7 +56,7 @@ namespace dotNetRogue
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("VueCorsPolicy");
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();
