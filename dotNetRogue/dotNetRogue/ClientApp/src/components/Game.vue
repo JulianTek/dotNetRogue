@@ -6,9 +6,11 @@ using dotNetRogue.Logic.Models;
     <p>Your health is: <strong>{{playerHealth}}</strong></p>
 
     <p v-if="weapon != null">You have a {{weapon.name}}</p>
-    <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
-    <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack())">Block!</button>
-    <button v-if="!canAttack" class="btn btn-primary" @click="dodge(enemyAttack())">Dodge!</button>
+    <div v-if="showButtons">
+        <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
+        <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack())">Block!</button>
+        <button v-if="!canAttack" class="btn btn-primary" @click="dodge(enemyAttack())">Dodge!</button>
+    </div>
     <p aria-live="polite"> {{ gameMessage }}</p>
 </template>
 
@@ -20,7 +22,8 @@ using dotNetRogue.Logic.Models;
         data() {
             return {
                 playerHealth: 100,
-                canAttack: true,
+                canAttack: null,
+                showButtons: false,
                 weapon: null,
                 enemy: null,
                 gameMessage: "",
@@ -53,8 +56,8 @@ using dotNetRogue.Logic.Models;
                 var dmg = Math.floor(Math.random() * this.enemy.attack) + Math.round(this.enemy.attack / 2);
                 return dmg;
             },
-            getWeapon() {
-                axios.get('/weapongenerator')
+            async getWeapon() {
+                await axios.get('/weapongenerator')
                     .then((response) => {
                         this.weapon = response.data;
                     })
@@ -62,8 +65,8 @@ using dotNetRogue.Logic.Models;
                         alert(error);
                     });
             },
-            getEnemy() {
-                axios.get('/enemygenerator')
+            async getEnemy() {
+                await axios.get('/enemygenerator')
                     .then((response) => {
                         this.enemy = response.data;
                     })
@@ -71,10 +74,21 @@ using dotNetRogue.Logic.Models;
                         alert(error);
                     });
             },
+            getAttackOrder() {
+                if (this.enemy.speed > this.weapon.stats["Speed"]) {
+                    this.canAttack = false;
+                }
+                else {
+                    this.canAttack = true;
+                }
+                this.showButtons = true;
+            }
+
         },
-        mounted() {
-            this.getWeapon();
-            this.getEnemy();
+        async mounted() {
+            await this.getWeapon();
+            await this.getEnemy();
+            this.getAttackOrder();
         }
     }
 </script>
