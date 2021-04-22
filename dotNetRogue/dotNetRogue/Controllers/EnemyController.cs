@@ -18,19 +18,30 @@ namespace dotNetRogue.Controllers
         }
         private readonly IEnemyRepository _enemyRepository;
 
-        [Route("/enemy")]
         [HttpGet]
         public IEnumerable<Enemy> Get()
         {
             return _enemyRepository.GetEnemies();
         }
 
-        [Route("/enemy")]
         [HttpPost]
         public IActionResult Post([FromBody]Enemy enemy)
         {
             _enemyRepository.Add(enemy);
             return Ok(enemy);
+        }
+
+
+        [HttpDelete("name")]
+        public async Task<IActionResult> Delete()
+        {
+            var result = true;
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

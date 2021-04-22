@@ -31,6 +31,7 @@
                 <td>{{ enemy.defense }}</td>
                 <td>{{ enemy.speed }}</td>
                 <td>{{ enemy.goldOnKill }}</td>
+                <button class="btn btn-danger" @click="deleteEnemy(enemy.name)">Delete</button>
             </tr>
         </tbody>
     </table>
@@ -93,7 +94,7 @@
             hideEnemyOverlay() {
                 this.showOverlay = false;
             },
-            async       addEnemy() {
+            async addEnemy() {
                 var enemy = {
                     name: this.name,
                     health: this.health,
@@ -103,15 +104,23 @@
                     goldOnKill: this.goldOnKill
                 }
                 console.log(enemy);
-                await axios.post('/enemy', {name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill}).then((response) => {
+                await axios.post('/enemy', { name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill }).then((response) => {
                     console.log(response);
                 })
                     .catch(function (error) {
                         alert(error.message);
                     });
                 this.enemyTypes.push(enemy);
-                this.showOverlay = false;   
+                this.showOverlay = false;
             },
+            async deleteEnemy(name) {
+                await axios.delete('/enemy/' + name).then((response) => {
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error.message);
+                    });
+            }
         },
         mounted() {
             this.getAll()
