@@ -31,5 +31,24 @@ namespace dotNetRogue.Repositories
             await _context.SaveChangesAsync();
             return enemy;
         }
+
+        public async Task<Enemy> Update(Enemy updatedEnemy)
+        {
+            var enemyToUpdate = await _context.Enemies.FindAsync(updatedEnemy.Name);
+            if (enemyToUpdate != null)
+            {
+                enemyToUpdate.Name = updatedEnemy.Name;
+                enemyToUpdate.Health = updatedEnemy.Health;
+                enemyToUpdate.Attack = updatedEnemy.Attack;
+                enemyToUpdate.Defense = updatedEnemy.Attack;
+                enemyToUpdate.Speed = updatedEnemy.Speed;
+                enemyToUpdate.GoldOnKill = updatedEnemy.GoldOnKill;
+
+                await _context.SaveChangesAsync();
+                return updatedEnemy;
+            }
+
+            return null;
+        }
     }
 }
