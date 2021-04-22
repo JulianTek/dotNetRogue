@@ -11,5 +11,6 @@ namespace dotNetRogue.Logic.Interfaces
         public IEnumerable<Enemy> GetEnemies();
         public Enemy GetEnemyByName(string name);
         public Task<Enemy> Add(Enemy enemy);
+        public Task<Enemy> Update(Enemy updatedEnemy);
     }
 }

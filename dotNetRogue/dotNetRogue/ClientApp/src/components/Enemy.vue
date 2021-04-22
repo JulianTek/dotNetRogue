@@ -26,7 +26,7 @@
         </thead>
         <tbody>
             <tr v-for="enemy of enemyTypes" v-bind:key="enemy.name">
-                <button @click="editEnemyOverlay">Edit</button>
+                <button @click="editEnemyOverlay(enemy.name, enemy.health, enemy.attack, enemy.defense, enemy.speed, enemy.goldOnKill)">Edit</button>
                 <td>{{ enemy.name }}</td>
                 <td>{{ enemy.health }}</td>
                 <td>{{ enemy.attack }}</td>
@@ -81,7 +81,7 @@
                     <input type="number" name="goldOnKill" v-model="goldOnKill" class="form-control form-control-lg" placeholder="Gold on kill" />
                 </form>
                 <div class="form-group">
-                    <button class="btn btn-info btn-block btn-lg" @click="addEnemy">Add enemy type</button>
+                    <button class="btn btn-info btn-block btn-lg" @click="updateEnemy">Update enemy type</button>
                 </div>
             </div>
         </div>
@@ -118,7 +118,13 @@
             addEnemyOverlay() {
                 this.showAddOverlay = true;
             },
-            editEnemyOverlay() {
+            editEnemyOverlay(name, health, attack, defense, speed, goldOnKill) {
+                this.name = name;
+                this.health = health;
+                this.attack = attack;
+                this.defense = defense;
+                this.speed = speed;
+                this.goldOnKill = goldOnKill;
                 this.showEditOverlay = true;
             },
             hideAddEnemyOverlay() {
@@ -128,23 +134,23 @@
                 this.showEditOverlay = false;
             },
             async addEnemy() {
-                var enemy = {
-                    name: this.name,
-                    health: this.health,
-                    attack: this.attack,
-                    defense: this.defense,
-                    speed: this.speed,
-                    goldOnKill: this.goldOnKill
-                }
-                console.log(enemy);
                 await axios.post('/enemy', { name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill }).then((response) => {
                     console.log(response);
                 })
                     .catch(function (error) {
                         alert(error.message);
                     });
-                this.enemyTypes.push(enemy);
-                this.showOverlay = false;
+                this.enemyTypes.push({ name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill });
+                this.showAddOverlay = false;
+            },
+            async updateEnemy() {
+                await axios.put('/enemy', { name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill }).then((response) => {
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error.message);
+                    });
+                this.showEditOverlay = false;
             },
         },
         mounted() {
