@@ -150,7 +150,20 @@
                     .catch(function (error) {
                         alert(error.message);
                     });
+                this.updateArray(this.name);
                 this.showEditOverlay = false;
+            },
+            updateArray(name) {
+                for (var i = 0; i < this.enemyTypes.length; i++) {
+                    if (this.enemyTypes[i].name == name) {
+                        this.enemyTypes[i].health = this.health;
+                        this.enemyTypes[i].attack = this.attack;
+                        this.enemyTypes[i].defense = this.defense;
+                        this.enemyTypes[i].speed = this.speed;
+                        this.enemyTypes[i].goldOnKill = this.goldOnKill;
+                        break;
+                    }
+                }
             },
         },
         mounted() {
