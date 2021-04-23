@@ -205,8 +205,7 @@ namespace dotNetRogue.Tests
             Assert.Equal(attack + 2, result.Attack);
             Assert.Equal(defense + 3, result.Defense);
             Assert.Equal(speed + 4, result.Speed);
-            Assert
-                .Equal(goldOnKill + 5, result.GoldOnKill);
+            Assert.Equal(goldOnKill + 5, result.GoldOnKill);
         }
         [Theory]
         [InlineData("Luchador", 50, 20, 20, 100, 30)]
