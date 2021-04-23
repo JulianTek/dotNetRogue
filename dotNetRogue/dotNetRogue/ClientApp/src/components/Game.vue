@@ -32,9 +32,17 @@ using dotNetRogue.Logic.Models;
         methods: {
             attack() {
                 var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2);
-                this.gameMessage = "Dealt " + dmg + " damage";
                 this.enemy.health = this.enemy.health - dmg;
-                this.canAttack = false;
+                if (this.enemy.health <= 0) {
+                    this.gameMessage = this.gameMessage = "Dealt " + dmg + " damage and killed " + this.enemy.name + "!";
+                    this.enemy = this.getEnemy();
+                    this.getAttackOrder();
+                }
+                else {
+                    this.gameMessage = "Dealt " + dmg + " damage";
+                    this.canAttack = false;
+                }
+
             },
             block(enemyDmg) {
                 this.playerHealth = this.playerHealth - Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
