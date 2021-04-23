@@ -2,16 +2,18 @@
 using dotNetRogue.Logic.Models;
 <template>
     <h1>dotNetRogue</h1>
-    <p v-if="enemy != null">You are attacked by a {{enemy.name}}</p>
-    <p>Your health is: <strong>{{playerHealth}}</strong></p>
+    <p v-if="enemy != null">You are attacked by a {{ enemy.name }}</p>
+    <p>Your health is: <strong>{{ playerHealth }}</strong></p>
 
-    <p v-if="weapon != null">You have a {{weapon.name}}</p>
+    <p v-if="weapon != null">You have a {{ weapon.name }}</p>
     <div v-if="showButtons">
         <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
         <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack())">Block!</button>
         <button v-if="!canAttack" class="btn btn-primary" @click="dodge(enemyAttack())">Dodge!</button>
+        <p>You have {{ playerGold }} gold</p>
     </div>
     <p aria-live="polite"> {{ gameMessage }}</p>
+    <p aria-live="polite" v-if="showGoldMsg">Gained {{ enemy.goldOnKill }} gold</p>
 </template>
 
 
@@ -24,8 +26,10 @@ using dotNetRogue.Logic.Models;
                 playerHealth: 100,
                 canAttack: null,
                 showButtons: false,
+                showGoldMsg: false,
                 weapon: null,
                 enemy: null,
+                playerGold: 0,
                 gameMessage: "",
             }
         },
@@ -35,17 +39,22 @@ using dotNetRogue.Logic.Models;
                 this.enemy.health = this.enemy.health - dmg;
                 if (this.enemy.health <= 0) {
                     this.gameMessage = this.gameMessage = "Dealt " + dmg + " damage and killed " + this.enemy.name + "!";
+                    this.playerGold = this.playerGold + this.enemy.goldOnKill;
+                    this.showGoldMsg = true;
                     this.enemy = this.getEnemy();
                     this.getAttackOrder();
                 }
                 else {
                     this.gameMessage = "Dealt " + dmg + " damage";
                     this.canAttack = false;
+                    this.showGoldMsg = false;
                 }
-
+                console.log(this.enemy.health);
             },
             block(enemyDmg) {
-                this.playerHealth = this.playerHealth - Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
+                var dmg =  Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
+                this.playerHealth = this.playerHealth - dmg;
+                this.gameMessage = "Enemy dealt " + dmg + " damage!"
                 this.canAttack = true;
             },
             dodge(enemyDmg) {
