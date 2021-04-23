@@ -43,5 +43,19 @@ namespace dotNetRogue.Controllers
 
             return NoContent();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Enemy enemy)
+        {
+            var result = await _enemyRepository.Update(enemy);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+            }
+
     }
 }
