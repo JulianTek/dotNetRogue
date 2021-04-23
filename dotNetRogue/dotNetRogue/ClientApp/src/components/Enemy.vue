@@ -33,6 +33,7 @@
                 <td>{{ enemy.defense }}</td>
                 <td>{{ enemy.speed }}</td>
                 <td>{{ enemy.goldOnKill }}</td>
+                <button class="btn btn-danger" @click="deleteEnemy(enemy.name)">Delete</button>
             </tr>
         </tbody>
     </table>
@@ -165,6 +166,22 @@
                     }
                 }
             },
+            async deleteEnemy(name) {
+                await axios.delete('/enemy/' + name).then((response) => {
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        alert(error.message);
+                    });
+                this.deleteFromArray(name);
+            },
+            deleteFromArray(name) {
+                for (var i = 0; i < this.enemyTypes.length; i++) {
+                    if (this.enemyTypes[i].name == name) {
+                        this.enemyTypes.splice(i, 1);
+                    }
+                }
+            }
         },
         mounted() {
             this.getAll()

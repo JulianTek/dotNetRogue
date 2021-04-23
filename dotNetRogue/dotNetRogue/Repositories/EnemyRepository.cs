@@ -20,16 +20,31 @@ namespace dotNetRogue.Repositories
             return _context.Enemies;
         }
 
-        public Enemy GetEnemyByName(string name)
+        public async Task<Enemy> GetEnemyByName(string name)
         {
-            return _context.Enemies.Find(name);
+            var enemy = await _context.Enemies.FindAsync(name);
+
+            return enemy ?? null;
         }
 
         public async Task<Enemy> Add(Enemy enemy)
-        {
-           await _context.AddAsync(enemy);
+        {   
+            await _context.AddAsync(enemy);
             await _context.SaveChangesAsync();
             return enemy;
+        }
+
+        public async Task<bool> Delete(string name)
+        {
+            var enemy = await _context.Enemies.FindAsync(name);
+
+            if (enemy == null)
+            {
+                return false;
+            }
+            _context.Enemies.Remove(enemy);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Enemy> Update(Enemy updatedEnemy)

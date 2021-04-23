@@ -31,6 +31,19 @@ namespace dotNetRogue.Controllers
             return Ok(enemy);
         }
 
+
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> Delete(string name)
+        {
+            var result = await _enemyRepository.Delete(name);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] Enemy enemy)
         {
