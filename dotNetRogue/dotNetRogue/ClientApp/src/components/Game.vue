@@ -14,7 +14,28 @@ using dotNetRogue.Logic.Models;
     </div>
     <p aria-live="polite"> {{ gameMessage }}</p>
     <p aria-live="polite" v-if="showGoldMsg">Gained {{ enemy.goldOnKill }} gold</p>
+
+    <!--Overlay of loot dialog-->
+    <div id="overlay" v-if="lootOverlay">
+        <div class="modal-dialogue">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new enemy type</h5>
+                    <button type="button" class="close">
+                        <span aria-hidden="true" @click="lootOverlay = false">&times;</span>
+                    </button>
+                </div>
+                <form class="modal-body">
+                </form>
+                <div class="form-group">
+                    <button class="btn btn-info btn-block btn-lg" @click="acceptWeapon">Accept weapon</button>
+                    <button class="btn btn-danger" @click="lootOverlay = false">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
+
 
 
 <script>
@@ -30,18 +51,20 @@ using dotNetRogue.Logic.Models;
                 weapon: null,
                 newWeapon: null,
                 enemy: null,
+                lootOverlay: false,
                 playerGold: 0,
                 gameMessage: "",
             }
         },
         methods: {
-            attack() {
+            async attack() {
                 var dmg = Math.floor(Math.random() * this.weapon.stats["Attack"]) + Math.round(this.weapon.stats["Attack"] / 2);
                 this.enemy.health = this.enemy.health - dmg;
                 if (this.enemy.health <= 0) {
                     this.gameMessage = this.gameMessage = "Dealt " + dmg + " damage and killed " + this.enemy.name + "!";
                     this.playerGold = this.playerGold + this.enemy.goldOnKill;
                     this.showGoldMsg = true;
+                    await this.generateLoot();
                     this.enemy = this.getEnemy();
                     this.getAttackOrder();
                 }
@@ -49,7 +72,6 @@ using dotNetRogue.Logic.Models;
                     this.gameMessage = "Dealt " + dmg + " damage";
                     this.canAttack = false;
                     this.showGoldMsg = false;
-                    this.generateLoot();
                 }
                 console.log(this.enemy.health);
             },
@@ -75,14 +97,16 @@ using dotNetRogue.Logic.Models;
                 var dmg = Math.floor(Math.random() * this.enemy.attack) + Math.round(this.enemy.attack / 2);
                 return dmg;
             },
-            generateLoot() {
-                axios.get('/weapongenerator')
+            async generateLoot() {
+               await axios.get('/weapongenerator')
                     .then((response) => {
                         this.newWeapon = response.data;
                     })
                     .catch(function (error) {
                         alert(error);
                     });
+                this.lootOverlay = true;
+                console.log(this.newWeapon)
             },
             async getWeapon() {
                 await axios.get('/weapongenerator')
@@ -110,6 +134,10 @@ using dotNetRogue.Logic.Models;
                     this.canAttack = true;
                 }
                 this.showButtons = true;
+            },
+            acceptWeapon() {
+                this.weapon = this.newWeapon;
+                this.newWeapon = null;
             }
 
         },
