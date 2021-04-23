@@ -28,7 +28,7 @@ using dotNetRogue.Logic.Models;
                 <form class="modal-body">
                 </form>
                 <div class="form-group">
-                    <button class="btn btn-info btn-block btn-lg" @click="acceptWeapon">Accept weapon</button>
+                    <button class="btn btn-info " @click="acceptWeapon">Accept weapon</button>
                     <button class="btn btn-danger" @click="lootOverlay = false">Decline</button>
                 </div>
             </div>
