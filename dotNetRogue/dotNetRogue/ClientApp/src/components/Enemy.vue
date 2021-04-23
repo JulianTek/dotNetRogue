@@ -120,6 +120,14 @@
                     .catch(function (error) {
                         alert(error.message);
                     });
+                this.deleteFromArray(name);
+            },
+            deleteFromArray(name) {
+                for (var i = 0; i < this.enemyTypes.length; i++) {
+                    if (this.enemyTypes[i].name == name) {
+                        this.enemyTypes.splice(i, 1);
+                    }
+                }
             }
         },
         mounted() {

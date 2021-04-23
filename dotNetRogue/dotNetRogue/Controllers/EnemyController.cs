@@ -32,10 +32,10 @@ namespace dotNetRogue.Controllers
         }
 
 
-        [HttpDelete("name")]
-        public async Task<IActionResult> Delete()
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> Delete(string name)
         {
-            var result = true;
+            var result = await _enemyRepository.Delete(name);
             if (!result)
             {
                 return NotFound();
