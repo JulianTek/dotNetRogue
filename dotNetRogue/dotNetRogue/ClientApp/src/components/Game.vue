@@ -28,6 +28,7 @@ using dotNetRogue.Logic.Models;
                 showButtons: false,
                 showGoldMsg: false,
                 weapon: null,
+                newWeapon: null,
                 enemy: null,
                 playerGold: 0,
                 gameMessage: "",
@@ -48,11 +49,12 @@ using dotNetRogue.Logic.Models;
                     this.gameMessage = "Dealt " + dmg + " damage";
                     this.canAttack = false;
                     this.showGoldMsg = false;
+                    this.generateLoot();
                 }
                 console.log(this.enemy.health);
             },
             block(enemyDmg) {
-                var dmg =  Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
+                var dmg = Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
                 this.playerHealth = this.playerHealth - dmg;
                 this.gameMessage = "Enemy dealt " + dmg + " damage!"
                 this.canAttack = true;
@@ -72,6 +74,15 @@ using dotNetRogue.Logic.Models;
             enemyAttack() {
                 var dmg = Math.floor(Math.random() * this.enemy.attack) + Math.round(this.enemy.attack / 2);
                 return dmg;
+            },
+            generateLoot() {
+                axios.get('/weapongenerator')
+                    .then((response) => {
+                        this.newWeapon = response.data;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             },
             async getWeapon() {
                 await axios.get('/weapongenerator')
