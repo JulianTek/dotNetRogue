@@ -20,12 +20,14 @@ using dotNetRogue.Logic.Models;
         <div class="modal-dialogue">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add new enemy type</h5>
+                    <h5 class="modal-title">You have found a new weapon!</h5>
                     <button type="button" class="close">
                         <span aria-hidden="true" @click="lootOverlay = false">&times;</span>
                     </button>
                 </div>
                 <form class="modal-body">
+                    <p>You have found a {{ newWeapon.name }}</p>
+                    <p>Will you accept?</p>
                 </form>
                 <div class="form-group">
                     <button class="btn btn-info " @click="acceptWeapon">Accept weapon</button>
@@ -138,6 +140,7 @@ using dotNetRogue.Logic.Models;
             acceptWeapon() {
                 this.weapon = this.newWeapon;
                 this.newWeapon = null;
+                this.lootOverlay = false;
             }
 
         },
