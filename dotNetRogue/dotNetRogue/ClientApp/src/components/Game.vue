@@ -66,7 +66,9 @@ using dotNetRogue.Logic.Models;
                     this.gameMessage = this.gameMessage = "Dealt " + dmg + " damage and killed " + this.enemy.name + "!";
                     this.playerGold = this.playerGold + this.enemy.goldOnKill;
                     this.showGoldMsg = true;
-                    await this.generateLoot();
+                    if (Math.floor(Math.random() * 100) + 1 <= 10) {
+                        await this.generateLoot();
+                    }
                     this.enemy = this.getEnemy();
                     this.getAttackOrder();
                 }
@@ -75,7 +77,6 @@ using dotNetRogue.Logic.Models;
                     this.canAttack = false;
                     this.showGoldMsg = false;
                 }
-                console.log(this.enemy.health);
             },
             block(enemyDmg) {
                 var dmg = Math.round((enemyDmg * (this.weapon.stats["Defense"] / 100)));
