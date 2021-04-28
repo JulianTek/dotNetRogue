@@ -17,8 +17,8 @@
             <tr>
                 <th></th>
                 <th>Name</th>
-                <th>Attack</th>
                 <th>Health</th>
+                <th>Attack</th>
                 <th>Defense</th>
                 <th>Speed</th>
                 <th>Gold on kill</th>
