@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotNetRogue.Logic.Models;
-using dotNetRogue.Repositories;
+using dotNetRogue.Application.Repositories;
+using dotNetRogue.Domain.Models;
+using dotNetRogue.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
