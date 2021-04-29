@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace dotNetRogue.Logic.Models
+namespace dotNetRogue.Domain.Models
 {
     public class Weapon
     {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotNetRogue.Logic.Interfaces;
-using dotNetRogue.Logic.Models;
+using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotNetRogue.Controllers

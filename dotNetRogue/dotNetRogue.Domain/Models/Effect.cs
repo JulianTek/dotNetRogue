@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace dotNetRogue.Logic.Models
+namespace dotNetRogue.Domain.Models
 {
     public class Effect
     {

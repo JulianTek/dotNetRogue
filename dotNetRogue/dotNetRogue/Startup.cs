@@ -9,8 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotNetRogue.Logic.Interfaces;
-using dotNetRogue.Repositories;
+using dotNetRogue.Application.Database;
+using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Application.Repositories;
+using dotNetRogue.Persistence;
 using Microsoft.EntityFrameworkCore;
 using VueCliMiddleware;
 
@@ -30,7 +32,7 @@ namespace dotNetRogue
         {
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson();
-            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
+            services.AddDbContextPool<IAppDbContext, AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";

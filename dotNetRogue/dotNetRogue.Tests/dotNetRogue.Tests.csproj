@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dotNetRogue.Data\dotNetRogue.Data.csproj" />
-    <ProjectReference Include="..\dotNetRogue.Logic\dotNetRogue.Logic.csproj" />
-    <ProjectReference Include="..\dotNetRogue\dotNetRogue.csproj" />
+    <ProjectReference Include="..\dotNetRogue\dotNetRogue.Presentation.csproj" />
   </ItemGroup>
 
 </Project>

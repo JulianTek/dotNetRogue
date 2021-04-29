@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dotNetRogue.Data\dotNetRogue.Data.csproj" />
-    <ProjectReference Include="..\dotNetRogue.Logic\dotNetRogue.Logic.csproj" />
+    <ProjectReference Include="..\dotNetRogue.Application\dotNetRogue.Application.csproj" />
+    <ProjectReference Include="..\Persistence\dotNetRogue.Persistence.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
