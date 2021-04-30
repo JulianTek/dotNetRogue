@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Data;
 using dotNetRogue.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace dotNetRogue.Controllers
     {
         private readonly ApiDecoder _apiDecoder = new ApiDecoder();
 
-        public async Task<Weapon> Get()
+        public async Task<WeaponDto> Get()
         {
             return await _apiDecoder.GenerateWeaponDto();
         }

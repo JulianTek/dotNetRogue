@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using dotNetRogue.Application.Database;
 using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Domain.Models;
 
 namespace dotNetRogue.Application.Repositories
@@ -14,23 +16,31 @@ namespace dotNetRogue.Application.Repositories
         }
 
         private readonly IAppDbContext _context;
-        public IEnumerable<Enemy> GetEnemies()
+        public IEnumerable<EnemyDto> GetEnemies()
         {
-            return _context.Enemies;
+            var enemyDtos = new List<EnemyDto>();
+            var enemies = _context.Enemies.ToList();
+
+            foreach (var enemy in enemies)
+            {
+                enemyDtos.Add(new EnemyDto(enemy));
+            }
+
+            return enemyDtos;
         }
 
-        public async Task<Enemy> GetEnemyByName(string name)
+        public async Task<EnemyDto> GetEnemyByName(string name)
         {
             var enemy = await _context.Enemies.FindAsync(name);
 
-            return enemy ?? null;
+            return enemy != null ? new EnemyDto(enemy) : null;
         }
 
-        public async Task<Enemy> Add(Enemy enemy)
+        public async Task<EnemyDto> Add(Enemy enemy)
         {
             await _context.Enemies.AddAsync(enemy);
             await _context.SaveChangesAsync();
-            return enemy;
+            return new EnemyDto(enemy);
         }
 
         public async Task<bool> Delete(string name)
@@ -46,7 +56,7 @@ namespace dotNetRogue.Application.Repositories
             return true;
         }
 
-        public async Task<Enemy> Update(Enemy updatedEnemy)
+        public async Task<EnemyDto> Update(Enemy updatedEnemy)
         {
             var enemyToUpdate = await _context.Enemies.FindAsync(updatedEnemy.Name);
             if (enemyToUpdate != null)
@@ -59,7 +69,7 @@ namespace dotNetRogue.Application.Repositories
                 enemyToUpdate.GoldOnKill = updatedEnemy.GoldOnKill;
 
                 await _context.SaveChangesAsync();
-                return updatedEnemy;
+                return new EnemyDto(updatedEnemy);
             }
 
             return null;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace dotNetRogue.Controllers
         private readonly IEnemyRepository _enemyRepository;
 
         [HttpGet]
-        public IEnumerable<Enemy> Get()
+        public IEnumerable<EnemyDto> Get()
         {
             return _enemyRepository.GetEnemies();
         }

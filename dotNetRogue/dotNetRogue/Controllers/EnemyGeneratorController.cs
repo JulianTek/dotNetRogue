@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace dotNetRogue.Controllers
         private readonly IEnemyRepository _enemyRepository;
         private readonly Random _rnd = new Random();
 
-        public Enemy Get()
+        public EnemyDto Get()
         {
             var enemies = _enemyRepository.GetEnemies().ToList();
             return enemies[_rnd.Next(0, enemies.Count)];
