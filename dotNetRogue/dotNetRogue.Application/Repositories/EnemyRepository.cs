@@ -5,6 +5,7 @@ using dotNetRogue.Application.Database;
 using dotNetRogue.Application.Interfaces;
 using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotNetRogue.Application.Repositories
 {
@@ -16,36 +17,44 @@ namespace dotNetRogue.Application.Repositories
         }
 
         private readonly IAppDbContext _context;
-        public IEnumerable<EnemyDto> GetEnemies()
+        public async Task<IEnumerable<EnemyDto>> GetEnemies()
         {
-            var enemyDtos = new List<EnemyDto>();
-            var enemies = _context.Enemies.ToList();
-
-            foreach (var enemy in enemies)
-            {
-                enemyDtos.Add(new EnemyDto(enemy));
-            }
-
-            return enemyDtos;
+            return await _context.Enemies.Select(enemy => new EnemyDto(enemy)).ToListAsync();
         }
 
-        public async Task<EnemyDto> GetEnemyByName(string name)
+        public async Task<EnemyDto> GetEnemyByName(int id)
         {
-            var enemy = await _context.Enemies.FindAsync(name);
+            var enemy = await _context.Enemies.FindAsync(id);
 
             return enemy != null ? new EnemyDto(enemy) : null;
         }
 
-        public async Task<EnemyDto> Add(Enemy enemy)
+        public async Task<EnemyDto> Add(NewEnemyDto enemy)
         {
-            await _context.Enemies.AddAsync(enemy);
+            var newEnemy = new Enemy()
+            {
+                Name = enemy.Name,
+                Health = enemy.Health,
+                Attack = enemy.Attack,
+                Defense = enemy.Defense,
+                Speed = enemy.Speed,
+                GoldOnKill = enemy.GoldOnKill
+            };
+            try
+            {
+                await _context.Enemies.AddAsync(newEnemy);
+            }
+            catch
+            {
+                return null;
+            }
             await _context.SaveChangesAsync();
-            return new EnemyDto(enemy);
+            return new EnemyDto(newEnemy);
         }
 
-        public async Task<bool> Delete(string name)
+        public async Task<bool> Delete(int id)
         {
-            var enemy = await _context.Enemies.FindAsync(name);
+            var enemy = await _context.Enemies.FindAsync(id);
 
             if (enemy == null)
             {
@@ -56,23 +65,21 @@ namespace dotNetRogue.Application.Repositories
             return true;
         }
 
-        public async Task<EnemyDto> Update(Enemy updatedEnemy)
+        public async Task<EnemyDto> Update(int id, Enemy updatedEnemy)
         {
-            var enemyToUpdate = await _context.Enemies.FindAsync(updatedEnemy.Name);
-            if (enemyToUpdate != null)
-            {
-                enemyToUpdate.Name = updatedEnemy.Name;
-                enemyToUpdate.Health = updatedEnemy.Health;
-                enemyToUpdate.Attack = updatedEnemy.Attack;
-                enemyToUpdate.Defense = updatedEnemy.Attack;
-                enemyToUpdate.Speed = updatedEnemy.Speed;
-                enemyToUpdate.GoldOnKill = updatedEnemy.GoldOnKill;
+            var enemyToUpdate = await _context.Enemies.FindAsync(id);
+            if (enemyToUpdate == null) return null;
 
-                await _context.SaveChangesAsync();
-                return new EnemyDto(updatedEnemy);
-            }
+            enemyToUpdate.Name = updatedEnemy.Name;
+            enemyToUpdate.Health = updatedEnemy.Health;
+            enemyToUpdate.Attack = updatedEnemy.Attack;
+            enemyToUpdate.Defense = updatedEnemy.Attack;
+            enemyToUpdate.Speed = updatedEnemy.Speed;
+            enemyToUpdate.GoldOnKill = updatedEnemy.GoldOnKill;
 
-            return null;
+            await _context.SaveChangesAsync();
+            return new EnemyDto(updatedEnemy);
+
         }
     }
 }

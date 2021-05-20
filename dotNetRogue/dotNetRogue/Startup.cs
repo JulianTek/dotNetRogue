@@ -20,9 +20,11 @@ namespace dotNetRogue
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private bool _isTestingEnv = false;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _isTestingEnv = env.IsEnvironment("Testing");
         }
 
         public IConfiguration Configuration { get; }
@@ -32,7 +34,10 @@ namespace dotNetRogue
         {
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson();
-            services.AddDbContextPool<IAppDbContext, AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
+            if (!_isTestingEnv)
+            {
+                services.AddDbContextPool<IAppDbContext, AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
+            }
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";

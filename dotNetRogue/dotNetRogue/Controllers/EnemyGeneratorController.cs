@@ -21,10 +21,11 @@ namespace dotNetRogue.Controllers
         private readonly IEnemyRepository _enemyRepository;
         private readonly Random _rnd = new Random();
 
-        public EnemyDto Get()
+        public async Task<ActionResult<EnemyDto>> Get()
         {
-            var enemies = _enemyRepository.GetEnemies().ToList();
-            return enemies[_rnd.Next(0, enemies.Count)];
+            var enemies = await _enemyRepository.GetEnemies();
+            var enemy = enemies.ToList()[_rnd.Next(0, enemies.ToList().Count)];
+            return Ok(enemy);
         }
     }
 }

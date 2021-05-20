@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetRogue.Application.Models.DTOs;
 using dotNetRogue.Application.Repositories;
 using dotNetRogue.Domain.Models;
 using dotNetRogue.Persistence;
@@ -50,9 +51,9 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = repository.GetEnemies().ToList();
+            var result = await repository.GetEnemies();
 
-            Assert.Equal(expectedCount, result.Count);
+            Assert.Equal(expectedCount, result.ToList().Count);
         }
 
         [Theory]
@@ -63,7 +64,7 @@ namespace dotNetRogue.Tests
             await using var dbContext = new AppDbContext(_dbContextOptions);
             await dbContext.Database.EnsureDeletedAsync();
 
-            await dbContext.AddAsync(new Enemy()
+            var entity = await dbContext.AddAsync(new Enemy()
             {
                 Name = name,
                 Health = health,
@@ -75,7 +76,7 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.GetEnemyByName(name);
+            var result = await repository.GetEnemyByName(entity.Entity.Id);
 
             Assert.NotNull(result);
             Assert.Equal(name, result.Name);
@@ -94,7 +95,7 @@ namespace dotNetRogue.Tests
             await using var dbContext = new AppDbContext(_dbContextOptions);
             await dbContext.Database.EnsureDeletedAsync();
 
-            await dbContext.AddAsync(new Enemy()
+            var entity = await dbContext.AddAsync(new Enemy()
             {
                 Name = name,
                 Health = health,
@@ -106,7 +107,7 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.GetEnemyByName("Luchadore");
+            var result = await repository.GetEnemyByName(int.MaxValue);
 
             Assert.Null(result);
         }
@@ -122,7 +123,7 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.Add(new Enemy()
+            var result = await repository.Add(new NewEnemyDto()
             {
                 Name = name,
                 Health = health,
@@ -148,7 +149,7 @@ namespace dotNetRogue.Tests
         {
             await using var dbContext = new AppDbContext(_dbContextOptions);
             await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.AddAsync(new Enemy()
+            var entity = await dbContext.AddAsync(new Enemy()
             {
                 Name = name,
                 Health = health,
@@ -160,9 +161,9 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.Delete("Luchadore");
+            var result = await repository.Delete(entity.Entity.Id);
 
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Theory]
@@ -172,7 +173,7 @@ namespace dotNetRogue.Tests
         {
             await using var dbContext = new AppDbContext(_dbContextOptions);
             await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.AddAsync(new Enemy()
+            var entity = await dbContext.AddAsync(new Enemy()
             {
                 Name = name,
                 Health = health,
@@ -193,7 +194,7 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.Update(updatedEnemy);
+            var result = await repository.Update(entity.Entity.Id, updatedEnemy);
 
             Assert.NotNull(result);
             Assert.Equal(name, result.Name);
@@ -215,7 +216,7 @@ namespace dotNetRogue.Tests
         {
             await using var dbContext = new AppDbContext(_dbContextOptions);
             await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.AddAsync(new Enemy()
+            var entity = await dbContext.AddAsync(new Enemy()
             {
                 Name = name,
                 Health = health,
@@ -236,7 +237,7 @@ namespace dotNetRogue.Tests
             await dbContext.SaveChangesAsync();
             var repository = new EnemyRepository(dbContext);
 
-            var result = await repository.Update(updatedEnemy);
+            var result = await repository.Update(int.MaxValue, updatedEnemy);
 
             Assert.Null(result);
         }

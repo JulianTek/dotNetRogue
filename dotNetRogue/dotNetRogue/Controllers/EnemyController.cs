@@ -20,23 +20,33 @@ namespace dotNetRogue.Controllers
         private readonly IEnemyRepository _enemyRepository;
 
         [HttpGet]
-        public IEnumerable<EnemyDto> Get()
+        public async Task<ActionResult<IEnumerable<EnemyDto>>> Get()
         {
-            return _enemyRepository.GetEnemies();
+            var enemies = await _enemyRepository.GetEnemies();
+            if (enemies.ToList().Count == 0)
+            {
+                return NoContent();
+            }
+
+            return Ok(enemies);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Enemy enemy)
+        public async Task<ActionResult<EnemyDto>> Post([FromBody]NewEnemyDto enemy)
         {
-            _enemyRepository.Add(enemy);
+            var result = await _enemyRepository.Add(enemy);
+            if (result == null)
+            {
+                return NoContent();
+            }
             return Ok(enemy);
         }
 
 
-        [HttpDelete("{name}")]
-        public async Task<IActionResult> Delete(string name)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _enemyRepository.Delete(name);
+            var result = await _enemyRepository.Delete(id);
             if (!result)
             {
                 return NotFound();
@@ -45,10 +55,10 @@ namespace dotNetRogue.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Enemy enemy)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<EnemyDto>> Put(int id, [FromBody] Enemy enemy)
         {
-            var result = await _enemyRepository.Update(enemy);
+            var result = await _enemyRepository.Update(id, enemy);
 
             if (result == null)
             {
