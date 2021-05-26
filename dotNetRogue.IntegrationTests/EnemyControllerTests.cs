@@ -136,5 +136,83 @@ namespace dotNetRogue.IntegrationTests
             Assert.NotEqual(newEntity.Name, entity.Entity.Name);
             Assert.NotEqual(newEntity.Health, entity.Entity.Health);
         }
+
+        [Theory]
+        [InlineData("Lawyer", 20, 20, 20, 20, 20, "Prosecutor", 30)]
+        public async Task UpdateEnemy_InvalidId_ReturnsNotFound(string name, int health, int attack, int defense, int speed, int goldOnKill, string newName, int newHealth)
+        { 
+            var client = CreateHttpClient();
+            var dbContext = GetDbContext();
+            var entity = await dbContext.Enemies.AddAsync(new Enemy()
+            {
+                Name = name,
+                Health = health,
+                Attack = attack,
+                Defense = defense,
+                Speed = speed,
+                GoldOnKill = goldOnKill
+            });
+            var newEnemy = new Enemy()
+            {
+                Name = newName,
+                Health = newHealth,
+                Attack = attack,
+                Defense = defense,
+                Speed = speed,
+                GoldOnKill = goldOnKill
+            };
+            await dbContext.SaveChangesAsync();
+
+            var response = await client.PutAsJsonAsync($"/enemy/{int.MaxValue}", newEnemy);
+            var result = await response.DeserializeAsJsonAsync<EnemyDto>();
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("Lawyer", 20, 20, 20, 20, 20)]
+        public async Task DeleteEnemy_ValidId_ReturnsNoContent(string name, int health, int attack, int defense,
+            int speed, int goldOnKill)
+        {
+            var client = CreateHttpClient();
+            var dbContext = GetDbContext();
+            var entity = await dbContext.Enemies.AddAsync(new Enemy()
+            {
+                Name = name,
+                Health = health,
+                Attack = attack,
+                Defense = defense,
+                Speed = speed,
+                GoldOnKill = goldOnKill
+            });
+            await dbContext.SaveChangesAsync();
+
+            var response = await client.DeleteAsync($"/enemy/{entity.Entity.Id}");
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("Lawyer", 20, 20, 20, 20, 20)]
+        public async Task DeleteEnemy_InvalidId_ReturnsNotFound(string name, int health, int attack, int defense,
+            int speed, int goldOnKill)
+        {
+            var client = CreateHttpClient();
+            var dbContext = GetDbContext();
+            var entity = await dbContext.Enemies.AddAsync(new Enemy()
+            {
+                Name = name,
+                Health = health,
+                Attack = attack,
+                Defense = defense,
+                Speed = speed,
+                GoldOnKill = goldOnKill
+            });
+            await dbContext.SaveChangesAsync();
+
+            var response = await client.DeleteAsync($"/enemy/{int.MaxValue}");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
     }
 }

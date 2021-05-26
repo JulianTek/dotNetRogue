@@ -37,7 +37,7 @@ namespace dotNetRogue.Controllers
             var result = await _enemyRepository.Add(enemy);
             if (result == null)
             {
-                return NoContent();
+                return NotFound();
             }
             return Ok(enemy);
         }
