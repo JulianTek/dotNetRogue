@@ -18,7 +18,7 @@ namespace dotNetRogue.Controllers
         public async Task<ActionResult<WeaponDto>> Get()
         {
             var weapon = await _apiDecoder.GenerateWeaponDto();
-            return Ok(weapon);
+            return Ok(new WeaponDto(weapon));
         }
     }
 }
