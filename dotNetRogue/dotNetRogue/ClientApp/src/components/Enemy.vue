@@ -16,6 +16,7 @@
         <thead>
             <tr>
                 <th></th>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Health</th>
                 <th>Attack</th>
@@ -26,14 +27,15 @@
         </thead>
         <tbody>
             <tr v-for="enemy of enemyTypes" v-bind:key="enemy.name">
-                <button @click="editEnemyOverlay(enemy.name, enemy.health, enemy.attack, enemy.defense, enemy.speed, enemy.goldOnKill)">Edit</button>
+                <button @click="editEnemyOverlay(enemy.id, enemy.name, enemy.health, enemy.attack, enemy.defense, enemy.speed, enemy.goldOnKill)">Edit</button>
+                <td>{{ enemy.id }}</td>
                 <td>{{ enemy.name }}</td>
                 <td>{{ enemy.health }}</td>
                 <td>{{ enemy.attack }}</td>
                 <td>{{ enemy.defense }}</td>
                 <td>{{ enemy.speed }}</td>
                 <td>{{ enemy.goldOnKill }}</td>
-                <button class="btn btn-danger" @click="deleteEnemy(enemy.name)">Delete</button>
+                <button class="btn btn-danger" @click="deleteEnemy(enemy.id)">Delete</button>
             </tr>
         </tbody>
     </table>
@@ -74,7 +76,8 @@
                     </button>
                 </div>
                 <form class="modal-body">
-                    <input type="text" name="name" v-model="this.name" class="form-control form-control-lg" disabled placeholder="Name" />
+                    <input type="text" name="id" v-model="this.id" class="form-control form-control-lg" placeholder="Id" />
+                    <input type="text" name="name" v-model="this.name" class="form-control form-control-lg" placeholder="Name" />
                     <input type="number" name="health" v-model="this.health" class="form-control form-control-lg" placeholder="Heatlh" />
                     <input type="number" name="attack" v-model="this.attack" class="form-control form-control-lg" placeholder="Attack" />
                     <input type="number" name="defense" v-model="this.defense" class="form-control form-control-lg" placeholder="Defense" />
@@ -98,12 +101,14 @@
                 enemyTypes: [],
                 showAddOverlay: false,
                 showEditOverlay: false,
+                id: "",
                 name: "",
                 health: 0,
                 attack: 0,
                 defense: 0,
                 speed: 0,
-                goldOnKill: 0
+                goldOnKill: 0,
+                deleteSucceed: true,
             }
         },
         methods: {
@@ -119,7 +124,8 @@
             addEnemyOverlay() {
                 this.showAddOverlay = true;
             },
-            editEnemyOverlay(name, health, attack, defense, speed, goldOnKill) {
+            editEnemyOverlay(id, name, health, attack, defense, speed, goldOnKill) {
+                this.id = id;
                 this.name = name;
                 this.health = health;
                 this.attack = attack;
@@ -145,7 +151,7 @@
                 this.showAddOverlay = false;
             },
             async updateEnemy() {
-                await axios.put('/enemy', { name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill }).then((response) => {
+                await axios.put('/enemy/' + this.id, { name: this.name, health: this.health, attack: this.attack, defense: this.defense, speed: this.speed, goldOnKill: this.goldOnKill }).then((response) => {
                     console.log(response);
                 })
                     .catch(function (error) {
@@ -166,14 +172,19 @@
                     }
                 }
             },
-            async deleteEnemy(name) {
-                await axios.delete('/enemy/' + name).then((response) => {
+            async deleteEnemy(id) {
+                await axios.delete('/enemy/' + id).then((response) => {
                     console.log(response);
                 })
                     .catch(function (error) {
                         alert(error.message);
+                        this.deleteSucceed = false;
                     });
-                this.deleteFromArray(name);
+                if (this.deleteSucceed) {
+                    this.deleteFromArray(name);
+                }
+                this.deleteSucceed = true;
+
             },
             deleteFromArray(name) {
                 for (var i = 0; i < this.enemyTypes.length; i++) {
