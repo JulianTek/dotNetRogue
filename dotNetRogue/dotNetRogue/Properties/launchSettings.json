@@ -19,7 +19,7 @@
     "dotNetRogue": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "dotNetRogue",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -10,6 +10,9 @@ namespace dotNetRogue.Application.Models.DTOs
     /// </summary>
     public class WeaponDto
     {
+        public WeaponDto()
+        { }
+
         /// <summary>
         /// Constructs a WeaponDto from a Weapon
         /// </summary>

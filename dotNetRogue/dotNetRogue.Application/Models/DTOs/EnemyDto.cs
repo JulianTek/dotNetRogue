@@ -21,6 +21,7 @@ namespace dotNetRogue.Application.Models.DTOs
         public EnemyDto(Enemy enemy)
         {
             Id = enemy.Id;
+            ImageUrl = enemy.ImageUrl;
             Name = enemy.Name;
             Health = enemy.Health;
             Attack = enemy.Attack;
@@ -30,6 +31,8 @@ namespace dotNetRogue.Application.Models.DTOs
         }
         [JsonPropertyName("id")]
         public int Id { get; set; }
+        [JsonPropertyName("image_url")]
+        public string ImageUrl { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("health")]
