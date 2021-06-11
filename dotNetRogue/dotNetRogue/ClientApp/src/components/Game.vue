@@ -17,7 +17,7 @@ using dotNetRogue.Logic.Models;
         </div>
         <div v-if="enemy != null" style="background-color: black; margin-left: 10px; margin-right: 10px;">
             <div style="float: left;">
-                <img src="../assets/life.png" style="height: 50px; width: 50px; float: left;" /> <p style="color: red">{{ playerHealth }}/100</p>
+                <img src="../assets/life.png" style="height: 50px; width: 50px; float: left; margin-left: 13px; margin-bottom: -5px;" /> <p style="color: red; margin-left: 10px; margin-bottom: auto;">{{ playerHealth }}/100</p>
             </div>
             <div style="margin: auto;">
                 <img src="../assets/gold.png" style="height: 40px; width: 40px" /> <p style="color: gold">{{ playerGold }}</p>
