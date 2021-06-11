@@ -1,7 +1,7 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/components/Home.vue";
-import Counter from "@/components/Counter.vue";
-import FetchData from "@/components/FetchData.vue";
+import Game from "@/components/Game.vue";
+import Enemy from "@/components/Enemy.vue";
 
 const routes = [
     {
@@ -10,14 +10,14 @@ const routes = [
         component: Home,
     },
     {
-        path: "/Counter",
-        name: "Counter",
-        component: Counter,
+        path: "/Game",
+        name: "Game",
+        component: Game,
     },
     {
-        path: "/FetchData",
-        name: "FetchData",
-        component: FetchData,
+        path: "/Enemy",
+        name: "Enemy",
+        component: Enemy,
     }
 ];
 

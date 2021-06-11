@@ -9,15 +9,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotNetRogue.Application.Database;
+using dotNetRogue.Application.Interfaces;
+using dotNetRogue.Application.Repositories;
+using dotNetRogue.Persistence;
+using Microsoft.EntityFrameworkCore;
 using VueCliMiddleware;
 
 namespace dotNetRogue
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private bool _isTestingEnv = false;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _isTestingEnv = env.IsEnvironment("Testing");
         }
 
         public IConfiguration Configuration { get; }
@@ -26,10 +33,27 @@ namespace dotNetRogue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+            if (!_isTestingEnv)
+            {
+                services.AddDbContextPool<IAppDbContext, AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mainDb")));
+            }
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("VueCorsPolicy", builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:8080");
+                });
+            });
+            services.AddScoped<IEnemyRepository, EnemyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +63,7 @@ namespace dotNetRogue
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("VueCorsPolicy");
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();
