@@ -4,16 +4,11 @@ using dotNetRogue.Logic.Models;
     <div style="background-image: url('https://i.redd.it/6axfm8uck3oy.png'); height: 100vh;">
         <img src="../assets//skeleton.png" style="width: 150px; height: 400px;" v-if="enemy != null" />
 
-        <p v-if="weapon != null">You have a {{ weapon.name }}</p>
-        <div v-if="showButtons">
-            <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-primary" @click="attack">Attack!</button>
-            <button v-if="!canAttack" class="btn btn-primary" @click="block(enemyAttack())">Block!</button>
-            <button v-if="!canAttack" class="btn btn-primary" @click="dodge(enemyAttack())">Dodge!</button>
-        </div>
-        <div style="background-color: dimgray; border: 5px solid black; height: 100px; margin-left: 10px; margin-right: 10px;" v-if="enemy != null">
-            <p strong v-if="enemy != null" style="color: white;">You are attacked by a {{ enemy.name }}</p>
-            <p strong aria-live="polite" style="color: white;"> {{ gameMessage }}</p>
-            <p strong aria-live="polite" v-if="showGoldMsg" style="color: white;">Gained {{ enemy.goldOnKill }} gold</p>
+        <div style="background-color: dimgray; color: white; border: 5px solid black; height: 100px; margin-left: 10px; margin-right: 10px;" v-if="enemy != null">
+            <p strong v-if="enemy != null">You are attacked by a {{ enemy.name }}</p>
+            <p strong aria-live="polite"> {{ gameMessage }}</p>
+            <p strong aria-live="polite" v-if="showGoldMsg" style="color: white; margin-bottom: 0px;">Gained {{ enemy.goldOnKill }} gold</p>
+            <p v-if="weapon != null">You have a {{ weapon.name }}</p>
         </div>
         <div v-if="enemy != null" style="background-color: black; margin-left: 10px; margin-right: 10px;">
             <div style="float: left;">
@@ -22,6 +17,11 @@ using dotNetRogue.Logic.Models;
             <div style="margin: auto;">
                 <img src="../assets/gold.png" style="height: 40px; width: 40px" /> <p style="color: gold">{{ playerGold }}</p>
             </div>
+        </div>
+        <div v-if="showButtons">
+            <button v-if="weapon != null && enemy != null && canAttack" class="btn btn-danger" @click="attack">Attack!</button>
+            <button v-if="!canAttack" class="btn btn-success" @click="block(enemyAttack())">Block!</button>
+            <button v-if="!canAttack" class="btn btn-success" @click="dodge(enemyAttack())">Dodge!</button>
         </div>
         <!--Overlay of loot dialog-->
         <div id="overlay" v-if="lootOverlay">
@@ -75,6 +75,7 @@ using dotNetRogue.Logic.Models;
                 if (this.enemy.health <= 0) {
                     this.gameMessage = this.gameMessage = "Dealt " + dmg + " damage and killed " + this.enemy.name + "!";
                     this.playerGold = this.playerGold + this.enemy.goldOnKill;
+                    this.enemy = null;
                     this.showGoldMsg = true;
                     if (Math.floor(Math.random() * 100) + 1 <= 10) {
                         await this.generateLoot();
