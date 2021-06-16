@@ -9,13 +9,13 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["dotNetRogue/dotNetRogue.Presentation/dotNetRogue.Presentation.csproj", "dotNetRogue/dotNetRogue.Presentation/"]
-COPY ["dotNetRogue/dotNetRogue.Application/dotNetRogue.Application.csproj", "dotNetRogue/dotNetRogue.Application/"]
-COPY ["dotNetRogue/dotNetRogue.Domain/dotNetRogue.Domain.csproj", "dotNetRogue/dotNetRogue.Domain/"]
-COPY ["dotNetRogue/dotNetRogue.Persistence/dotNetRogue.Persistence.csproj", "dotNetRogue/dotNetRogue.Persistence/"]
-RUN dotnet restore "dotNetRogue/dotNetRogue.Presentation/dotNetRogue.Presentation.csproj"
+COPY ["dotNetRogue.Presentation/dotNetRogue.Presentation.csproj", "dotNetRogue.Presentation/"]
+COPY ["dotNetRogue.Application/dotNetRogue.Application.csproj", "dotNetRogue.Application/"]
+COPY ["dotNetRogue.Domain/dotNetRogue.Domain.csproj", "dotNetRogue.Domain/"]
+COPY ["dotNetRogue.Persistence/dotNetRogue.Persistence.csproj", "dotNetRogue.Persistence/"]
+RUN dotnet restore "dotNetRogue.Presentation/dotNetRogue.Presentation.csproj"
 COPY . .
-WORKDIR "/src/dotNetRogue/dotNetRogue.Presentation"
+WORKDIR "/src/dotNetRogue.Presentation"
 RUN dotnet build "dotNetRogue.Presentation.csproj" -c Release -o /app/build
 
 FROM build AS publish
