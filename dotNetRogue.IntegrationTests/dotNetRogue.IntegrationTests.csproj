@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dotNetRogue\dotNetRogue\dotNetRogue.Presentation.csproj" />
-    <ProjectReference Include="..\dotNetRogue\Persistence\dotNetRogue.Persistence.csproj" />
+    <ProjectReference Include="..\dotNetRogue\dotNetRogue.Presentation\dotNetRogue.Presentation.csproj" />
+    <ProjectReference Include="..\dotNetRogue\dotNetRogue.Persistence\dotNetRogue.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
