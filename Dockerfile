@@ -4,10 +4,18 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+    && apt-get install nodejs -yq
 WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+    && apt-get install nodejs -yq
 WORKDIR /src
 COPY ["dotNetRogue.Presentation/dotNetRogue.Presentation.csproj", "dotNetRogue.Presentation/"]
 COPY ["dotNetRogue.Application/dotNetRogue.Application.csproj", "dotNetRogue.Application/"]
